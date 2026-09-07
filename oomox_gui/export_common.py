@@ -528,6 +528,10 @@ class DialogWithExportPath(ExportDialogWithOptions):
                 self.OPTIONS.DEFAULT_PATH: {
                     "default": self.default_export_dir,
                     "display_name": translate("Export _path: "),
+                    "help": translate(
+                        "Use <THEME_NAME> as a placeholder for the current"
+                        " theme name, e.g. ~/.themes/<THEME_NAME>/",
+                    ),
                 },
             })
         if add_options:
@@ -542,32 +546,25 @@ class DialogWithExportPath(ExportDialogWithOptions):
                 (self.OPTIONS.DEFAULT_PATH in self.option_widgets) and
                 (self.export_config.get(self.OPTIONS.DEFAULT_PATH))
         ):
-            new_export_path = self.export_config[self.OPTIONS.DEFAULT_PATH].replace(
-                "<THEME_NAME>",
-                self.theme_name,
-            )
-            if self.theme_name not in new_export_path:
-                new_export_path = os.path.join(
-                    new_export_path,
-                    self.theme_name,
-                )
             self.option_widgets[self.OPTIONS.DEFAULT_PATH].set_text(  # type: ignore[attr-defined]
-                new_export_path,
+                self.export_config[self.OPTIONS.DEFAULT_PATH],
             )
 
     def remove_preset_name_from_path_config(self) -> None:
-        export_path = os.path.expanduser(
+        # @TODO: remove it after removing its usages
+        pass
+
+    def get_export_path(self) -> str:
+        export_path: str = os.path.expanduser(
             self.option_widgets[self.OPTIONS.DEFAULT_PATH].get_text(),  # type: ignore[attr-defined]
         )
-        # new_destination_dir, _theme_name = export_path.rstrip("/").rsplit("/", 1)
-        self.export_config[self.OPTIONS.DEFAULT_PATH] = export_path.replace(
-            self.theme_name,
+        return export_path.replace(
             "<THEME_NAME>",
+            self.theme_name,
         )
-        self.export_config.save()
 
     def do_export(self) -> None:
-        self.remove_preset_name_from_path_config()
+        self.export_config.save()
         super().do_export()
 
 

@@ -65,9 +65,7 @@ class XresourcesExportDialog(DialogWithExportPath):
             self.set_text(self.xresources_theme)
 
     def do_export(self) -> None:
-        export_path = os.path.expanduser(
-            self.option_widgets[self.OPTIONS.DEFAULT_PATH].get_text(),  # type: ignore[attr-defined]
-        )
+        export_path = self.get_export_path()
         parent_dir = os.path.dirname(export_path)
         if not os.path.exists(parent_dir):
             os.makedirs(parent_dir)

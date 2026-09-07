@@ -22,10 +22,7 @@ class SuruPlusIconsExportDialog(CommonIconThemeExportDialog):
     config_name = "icons_suruplus_aspromauros"
 
     def do_export(self) -> None:
-        export_path = os.path.expanduser(
-            self.option_widgets[self.OPTIONS.DEFAULT_PATH].get_text(),
-        )
-
+        export_path = self.get_export_path()
         self.command = [
             "bash",
             os.path.join(PLUGIN_DIR, "change_color.sh"),
