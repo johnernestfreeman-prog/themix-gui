@@ -7,6 +7,7 @@ from gi.repository import Gio, Gtk
 from .config import BUILTIN_EXPORT_CONFIG_DIR, USER_EXPORT_CONFIG_DIR
 from .export_common import DialogWithExportPath
 from .gtk_helpers import (
+    DEFAULT_PADDING,
     EntryDialog,
     ImageButton,
     ImageMenuButton,
@@ -29,7 +30,6 @@ if TYPE_CHECKING:
 BaseClass = WindowWithActions  # checkglobals-ignore
 
 
-DEFAULT_PADDING: "Final[int]" = 8
 CONFIG_FILE_PREFIX: "Final[str]" = "multi_export_"
 LAST_PRESET: "Final[str]" = "last_preset"
 

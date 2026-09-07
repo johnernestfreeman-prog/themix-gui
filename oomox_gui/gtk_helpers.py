@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, ClassVar
+from typing import TYPE_CHECKING, ClassVar, Final
 
 from gi.repository import GdkPixbuf, Gio, GLib, Gtk
 from gi.types import GObjectMeta
@@ -12,6 +12,9 @@ if TYPE_CHECKING:
 
     from gi.repository import Pango
     from typing_extensions import Self
+
+
+DEFAULT_PADDING: "Final[int]" = 8
 
 
 class ActionProperty(str):  # ruff: ignore[subclass-builtin]
