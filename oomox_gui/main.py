@@ -120,6 +120,51 @@ class RemoveDialog(YesNoDialog):
         )
 
 
+class WelcomeDialog(Gtk.Dialog):
+
+    def __init__(self, transient_for: Gtk.Window) -> None:
+        super().__init__(
+            title=translate("Welcome to Themix"),
+            transient_for=transient_for,
+            flags=0,
+        )
+        self.set_default_size(400, 200)
+
+        box = self.get_content_area()
+        box.set_spacing(6)
+
+        intro_label = CenterLabel(
+            label=translate("Are you new to Themix? Online documentation is available!"),
+        )
+        box.add(intro_label)
+
+        links = (
+            (translate("How to create and export theme"),
+             "https://github.com/themix-project/oomox/wiki"),
+            (translate("How to import and export base16"),
+             "https://github.com/themix-project/oomox/wiki/base16"),
+            (translate("How to create themes from images"),
+             "https://github.com/themix-project/oomox/wiki/image"),
+        )
+        for label_text, url in links:
+            link_button = Gtk.LinkButton.new_with_label(url, label_text)
+            box.add(link_button)
+
+        self.dont_show_checkbox = Gtk.CheckButton.new_with_label(
+            translate("Don't show this dialog at startup."),
+        )
+        self.dont_show_checkbox.set_active(True)
+        box.add(self.dont_show_checkbox)
+
+        self.add_button(translate("_OK"), Gtk.ResponseType.OK)
+
+        self.show_all()
+
+    def do_response(self, _response: Gtk.ResponseType) -> None:  # pylint: disable=arguments-differ
+        UISettings().show_welcome_dialog = not self.dont_show_checkbox.get_active()
+        self.destroy()
+
+
 class AppActions(ActionsEnum):
     _target = "app"
     quit_action = ActionProperty(_target, "quit")
@@ -953,7 +998,9 @@ class OomoxGtkApplication(Gtk.Application):
         if not self.window:
             self.window = OomoxApplicationWindow(application=self, show_window=self.show_window)
         self.window.present()
-
+        if UISettings().show_welcome_dialog:
+            WelcomeDialog(transient_for=self.window).show()
+            
     def do_command_line(self, _command_line: None) -> int:  # pylint: disable=arguments-differ
         # options = command_line.get_options_dict()
         # if options.contains("test"):
