@@ -16,7 +16,9 @@ from gi.repository import (
 
 from .config import DEFAULT_ENCODING, USER_EXPORT_CONFIG_DIR
 from .gtk_helpers import (
+    DEFAULT_PADDING,
     CenterLabel,
+    # ImageButton,
     g_abstractproperty,
     nongobject_check_class_for_gobject_metas,
 )
@@ -419,6 +421,33 @@ class ExportDialogWithOptions(FileBasedExportDialog):
                 self.option_widgets[option_name] = entry
             else:
                 raise NotImplementedError
+            if help_msg := option.get("help"):
+                # help_button = ImageButton(
+                #     "dialog-question-symbolic", help_msg,
+                # )
+
+                help_button = Gtk.MenuButton()
+                # help_button.set_tooltip_text(help_msg)
+                help_button.add(
+                    Gtk.Image.new_from_icon_name(
+                        "dialog-question-symbolic",
+                        Gtk.IconSize.BUTTON,
+                    ),
+                )
+                popover = Gtk.Popover.new(help_button)  # type: ignore[arg-type]
+                label = Gtk.Label(label=help_msg, wrap=True)  # type: ignore[call-arg]
+                label.set_xalign(0)
+                label.set_margin_top(DEFAULT_PADDING)
+                label.set_margin_bottom(DEFAULT_PADDING)
+                label.set_margin_start(DEFAULT_PADDING)
+                label.set_margin_end(DEFAULT_PADDING)
+                popover.add(label)
+                popover.show_all()
+                popover.hide()
+                help_button.set_popover(popover)
+
+                help_button.get_style_context().add_class("flat")
+                value_widget.pack_start(help_button, False, False, 0)  # type: ignore[union-attr]
             self.options_box.add(value_widget)
 
     def __init__(
