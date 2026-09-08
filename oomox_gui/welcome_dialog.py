@@ -26,18 +26,18 @@ class WelcomeDialog(Gtk.Dialog):
 
         links = (
             (translate("How to contribute your theme"),
-             "https://github.com/themix-project/themix-gui/wiki/"
-             "How-to-contribute-your-theme-from-Github-website"),
+             ("https://github.com/themix-project/themix-gui/wiki/"
+              "How-to-contribute-your-theme-from-Github-website")),
             (translate("How to import and export Base16 themes"),
-             "https://github.com/themix-project/themix-gui/wiki/"
-             "How-to-import-and-export-Base16-themes-in-Themix-Oomox"),
+             ("https://github.com/themix-project/themix-gui/wiki/"
+              "How-to-import-and-export-Base16-themes-in-Themix-Oomox")),
         )
         for label_text, url in links:
             link_button = Gtk.LinkButton.new_with_label(url, label_text)
             box.add(link_button)
 
         self.dont_show_checkbox = Gtk.CheckButton.new_with_label(
-            translate("Don\'t show this dialog at startup."),
+            translate("Don't show this dialog at startup."),
         )
         self.dont_show_checkbox.set_active(True)
         box.add(self.dont_show_checkbox)
