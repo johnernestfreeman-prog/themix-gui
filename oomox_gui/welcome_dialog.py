@@ -39,7 +39,7 @@ class WelcomeDialog(Gtk.Dialog):
         self.dont_show_checkbox = Gtk.CheckButton.new_with_label(
             translate("Don't show this dialog at startup."),
         )
-        self.dont_show_checkbox.set_active(True)
+        self.dont_show_checkbox.set_active(True)  # type: ignore[attr-defined]
         box.add(self.dont_show_checkbox)
 
         self.add_button(translate("_OK"), Gtk.ResponseType.OK)
@@ -47,5 +47,5 @@ class WelcomeDialog(Gtk.Dialog):
         self.show_all()
 
     def do_response(self, _response: Gtk.ResponseType) -> None:  # pylint: disable=arguments-differ
-        UISettings().show_welcome_dialog = not self.dont_show_checkbox.get_active()
+        UISettings().show_welcome_dialog = not self.dont_show_checkbox.get_active()  # type: ignore[attr-defined]
         self.destroy()
